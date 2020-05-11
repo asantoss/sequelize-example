@@ -1,0 +1,28 @@
+form {
+	margin: auto;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: stretch;
+}
+
+form > label {
+	font-size: 1.2rem;
+	font-weight: 500;
+	margin: 0.5rem;
+}
+form > input {
+	padding: 8px 10px;
+	margin: 0.5rem;
+}
+[type='submit'] {
+	margin: 1rem;
+	padding: 8px 16px;
+	font-size: 1rem;
+	background-color: darkgreen;
+	border-radius: 8px;
+	color: white;
+	border: none;
+	align-self: center;
+}

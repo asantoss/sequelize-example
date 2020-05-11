@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('partials/header.ejs') %>
+	<body>
+		<form action="/login" method="POST" id="login">
+			<h1>Login form:</h1>
+			<% if(message.length) {%>
+			<p><%= message %></p>
+			<% } %>
+			<label for="email">Email: </label>
+			<input type="email" name="email" id="email" />
+			<label for="password">Password: </label>
+			<input type="password" name="password" id="password" />
+			<button type="submit">Submit</button>
+		</form>
+	</body>
+</html>

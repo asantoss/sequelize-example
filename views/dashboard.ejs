@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include('partials/header.ejs') %>
+	<body>
+		<main>
+			<h1>Welcome, <%= user.username %></h1>
+			<% if(!user.tweets.length) {%>
+			<p>You dont have any tweets yet get to tweeting!</p>
+			<% } %>
+			<ul>
+				<% user.tweets.forEach(tweet => { %>
+				<li>
+					<%= tweet.message %>
+				</li>
+				<% }) %>
+			</ul>
+
+			<form action="/api/newTweet" method="post">
+				<h1>New Tweet</h1>
+				<label for="message">Message</label>
+				<input id="message" name="message" type="text" />
+				<button type="submit">Submit</button>
+			</form>
+		</main>
+	</body>
+</html>

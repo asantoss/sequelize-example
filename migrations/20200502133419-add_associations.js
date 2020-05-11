@@ -2,16 +2,16 @@
 
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.addColumn('tweets', 'userId', {
+		return queryInterface.addColumn('tweet', 'userId', {
 			type: Sequelize.INTEGER,
-			refrences: {
-				table: 'user',
+			allowNull: false,
+			references: {
+				model: 'user',
 				column: 'id',
 			},
 			onUpdate: 'CASCADE',
 			onDelete: 'SET NULL',
 		});
-
 		/*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -22,7 +22,7 @@ module.exports = {
 	},
 
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.removeColumn('tweets', 'userId');
+		return queryInterface.removeColumn('tweet', 'userId');
 		/*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.
