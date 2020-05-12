@@ -12,6 +12,7 @@ const flash = require('connect-flash');
 const myStore = new SequelizeStore({
 	db: db.sequelize,
 });
+
 // We are using the local strategy. Below we define how we query our user in the database.
 passport.use(
 	new LocalStrategy(
@@ -55,7 +56,10 @@ passport.deserializeUser((id, done) => {
 			console.log(`Error: ${error}`);
 		});
 });
+
+//Flash middleware is used by passport to show error messages when auth fails.
 app.use(flash());
+
 app.use(
 	session({
 		store: myStore,
@@ -68,12 +72,19 @@ app.use(
 		},
 	})
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Serve the public directory we will house our css files in there.
 app.use(express.static(__dirname + '/public'));
+//Set our view engine as EJS
 app.set('view engine', 'ejs');
+//Body parser middleware so we can read req.body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//This middleware checks that the user is authenticated if not it will redirect them to the login route.
 app.use((req, res, next) => {
 	if (req.isAuthenticated()) {
 		return next();
@@ -83,7 +94,7 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-
+//We impletemented a passport local strategy here.
 app.post(
 	'/login',
 	passport.authenticate('local', {
@@ -96,7 +107,14 @@ app.post(
 
 app.get('/login', function (req, res) {
 	//This route will render our login view.
+	//Req.flash is used by the passport strategy to send login failure messages.
+	//For this to work we added the connect-flash middleware. see Line 60.
 	res.render('login', { message: req.flash('error') });
+});
+
+app.get('/logout', function (req, res) {
+	req.logOut();
+	res.redirect('/login');
 });
 
 app.get('/api/users', (req, res) => {
@@ -112,6 +130,7 @@ app.get('/api/tweets', (req, res) => {
 		res.json(results);
 	});
 });
+
 app.get('/dashboard', (req, res) => {
 	db.user.findByPk(req.session.passport.user).then((user) => {
 		if (user) {
@@ -121,7 +140,7 @@ app.get('/dashboard', (req, res) => {
 				} else {
 					user.tweets = [];
 				}
-				res.render('dashboard', { user });
+				res.render('dashboard', { user: user });
 			});
 		}
 	});
@@ -176,6 +195,6 @@ app.post('/api/newTweet', (req, res) => {
 	});
 });
 
-app.listen(3000, () => {
-	console.log('Listening on \n  http://localhost:3000');
+app.listen(3001, () => {
+	console.log('Listening on \n  http://localhost:3001');
 });
