@@ -2,6 +2,7 @@
 <html lang="en">
 	<%- include('partials/header.ejs') %>
 	<body>
+		<div id="timer"></div>
 		<form action="/login" method="POST" id="login">
 			<h1>Login form:</h1>
 			<% if(message.length) {%>

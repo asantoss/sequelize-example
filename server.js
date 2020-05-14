@@ -8,6 +8,7 @@ var passport = require('passport');
 const bcrypt = require('bcryptjs');
 var LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
+const generate = require('node-chartist');
 
 const myStore = new SequelizeStore({
 	db: db.sequelize,
@@ -140,7 +141,17 @@ app.get('/dashboard', (req, res) => {
 				} else {
 					user.tweets = [];
 				}
-				res.render('dashboard', { user: user });
+				const options = { width: 400, height: 200 };
+				const data = {
+					labels: ['a', 'b', 'c', 'd', 'e'],
+					series: [
+						[1, 2, 3, 4, 5],
+						[3, 4, 5, 6, 7],
+					],
+				};
+				generate('bar', options, data).then((chart) => {
+					res.render('dashboard', { user, chart });
+				});
 			});
 		}
 	});
